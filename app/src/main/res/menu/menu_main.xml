@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+
+    <item
+        android:id="@+id/new_tab"
+        android:title="New Tab"
+        android:visible="false"
+        app:showAsAction="never"/>
+
+    <!--<item-->
+        <!--android:id="@+id/incog_tab"-->
+        <!--android:title="New Igcognito Tab"-->
+        <!--android:visible="true"-->
+        <!--app:showAsAction="never"/>-->
+
+    <!--<item-->
+        <!--android:id="@+id/bookmarks"-->
+        <!--android:title="Bookmarks"-->
+        <!--android:visible="true"-->
+        <!--app:showAsAction="never"/>-->
+
+    <!--<item-->
+        <!--android:id="@+id/recent_tabs"-->
+        <!--android:title="Recent Tabs"-->
+        <!--android:visible="true"-->
+        <!--app:showAsAction="never"/>-->
+
+    <!--<item-->
+        <!--android:id="@+id/history"-->
+        <!--android:title="History"-->
+        <!--android:visible="true"-->
+        <!--app:showAsAction="never"/>-->
+
+    <!--<item-->
+        <!--android:id="@+id/share"-->
+        <!--android:title="Share"-->
+        <!--android:visible="true"-->
+        <!--app:showAsAction="never"/>-->
+
+
+
+</menu>
