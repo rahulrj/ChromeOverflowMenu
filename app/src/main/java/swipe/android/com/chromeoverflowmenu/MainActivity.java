@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,7 +22,11 @@ public class MainActivity extends ActionBarActivity {
     LayoutInflater inflater;
     ImageView overflowMenu;
     ListPopupWindow popupWindow;
-    String def[]=new String[]{"New Tab","New Incognito Tab","Bookmarks","Recent Tabs","History","Share","Print","Find in page","Add to home screen","Request desktop site","Settings"};
+    String def[]=new String[]{"New Tab","New Incognito Tab","Bookmarks","Recent Tabs","History","Share","Print","Find in page","Add To Home screen","Request desktop site"};
+    boolean listenerSet=false;
+    android.os.Handler mHandler=new android.os.Handler();
+    View mConvertViewCopy;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +36,17 @@ public class MainActivity extends ActionBarActivity {
 
 
         popupWindow=new ListPopupWindow(this);
+        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.background));
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final HamburgerMenuAdapter adapter=new HamburgerMenuAdapter(def);
         overflowMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                Log.d("rahul","clicked");
                 popupWindow.show();
-                View fr=popupWindow.getListView();
-                Log.d("rahul", "" + fr);
+                //setDismissListener();
+
 
             }
         });
@@ -49,12 +57,37 @@ public class MainActivity extends ActionBarActivity {
                 popupWindow.setAnchorView(getSupportActionBar().getCustomView().findViewById(R.id.abc));
                 popupWindow.setAdapter(adapter);
                 setClickListener();
-                popupWindow.setWidth(550); // note: don't use pixels, use a dimen resource
+                popupWindow.setWidth(480); // note: don't use pixels, use a dimen resource
+                popupWindow.setHeight(1000);
+                //popupWindow.setDropDownGravity(Gravity.RIGHT);
+                popupWindow.setHorizontalOffset(300);
 
             }
         });
 
     }
+
+//    private void setDismissListener(){
+//
+//        listenerSet=true;
+//        popupWindow.getListView().post(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                View view=popupWindow.getListView().getChildAt(0);
+//                View overflowView=view.findViewById(R.id.overflow);
+//                overflowView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        popupWindow.dismiss();
+//                    }
+//                });
+//            }
+//        });
+//
+//
+//    }
 
     private void setClickListener(){
 
@@ -114,31 +147,39 @@ public class MainActivity extends ActionBarActivity {
 
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
-            ViewHolder holder;
-            if(convertView==null){
-                holder=new ViewHolder();
-                if(position==0)
-                    convertView=inflater.inflate(R.layout.menu_top_row,null);
-                else
-                    convertView=inflater.inflate(R.layout.listview_row,null);
+                   ViewHolder holder;
 
-                 holder.hamburgerMenuItem=(TextView)convertView.findViewById(R.id.menu_name);
-                 convertView.setTag(holder);
-            }
-            else{
+                    if(convertView==null){
+                        holder=new ViewHolder();
+                        if(position==0)
+                            convertView=inflater.inflate(R.layout.menu_top_row,null);
+                        else
+                            convertView=inflater.inflate(R.layout.listview_row,null);
 
-                holder=(ViewHolder)convertView.getTag();
-            }
+                        holder.hamburgerMenuItem=(TextView)convertView.findViewById(R.id.menu_name);
+                        convertView.setTag(holder);
+                    }
+                    else{
 
-            if(holder.hamburgerMenuItem!=null) {
-                holder.hamburgerMenuItem.setText(menuItems[position-1]);
-            }
-            //holder.hamburgerMenuItem.setCompoundDrawablesWithIntrinsicBounds(drawerImages.getResourceId(position, -1),0,0,0);
+                        holder=(ViewHolder)convertView.getTag();
+                    }
+
+                    if(holder.hamburgerMenuItem!=null)
+                        holder.hamburgerMenuItem.setText(menuItems[position - 1]);
+
+                if(position==0) {
+                    Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.first_row_animation);
+                    convertView.startAnimation(animation);
+                }
 
 
-            return convertView;
+
+          Log.d("rahul",""+convertView);
+          return convertView;
+
+
         }
     }
 
