@@ -5,4 +5,8 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_animation</item>
+    </style>
+
 </resources>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ListPopupWindow;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,7 +38,9 @@ public class MainActivity extends ActionBarActivity {
 
 
         popupWindow=new ListPopupWindow(this);
+        popupWindow.setAnimationStyle(R.style.Animation);
         popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.background));
+       // popupWindow.setAnimationStyle(R.anim.hyperspace_out);
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final HamburgerMenuAdapter adapter=new HamburgerMenuAdapter(def);
         overflowMenu.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +49,8 @@ public class MainActivity extends ActionBarActivity {
 
                 Log.d("rahul","clicked");
                 popupWindow.show();
+                LayoutAnimationController lac = new LayoutAnimationController(AnimationUtils.loadAnimation(MainActivity.this, R.anim.push_left_in), 0.3f);
+                popupWindow.getListView().setLayoutAnimation(lac);
                 //setDismissListener();
 
 
@@ -55,12 +61,13 @@ public class MainActivity extends ActionBarActivity {
             public void run() {
 
                 popupWindow.setAnchorView(getSupportActionBar().getCustomView().findViewById(R.id.abc));
-                popupWindow.setAdapter(adapter);
+               // popupWindow.setAdapter(adapter);
                 setClickListener();
                 popupWindow.setWidth(480); // note: don't use pixels, use a dimen resource
                 popupWindow.setHeight(1000);
-                //popupWindow.setDropDownGravity(Gravity.RIGHT);
-                popupWindow.setHorizontalOffset(300);
+                popupWindow.setDropDownGravity(Gravity.END);
+
+               // popupWindow.setHorizontalOffset(-130);
 
             }
         });
@@ -173,10 +180,14 @@ public class MainActivity extends ActionBarActivity {
                     Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.first_row_animation);
                     convertView.startAnimation(animation);
                 }
+            else {
+
+                    //Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.push_left_in);
+                    //convertView.startAnimation(animation);
+
+                }
 
 
-
-          Log.d("rahul",""+convertView);
           return convertView;
 
 
