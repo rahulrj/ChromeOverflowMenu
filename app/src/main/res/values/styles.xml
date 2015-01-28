@@ -7,6 +7,7 @@
 
     <style name="Animation">
         <item name="android:windowEnterAnimation">@anim/dialog_animation</item>
+        <item name="android:windowExitAnimation">@anim/dialog_close_animation</item>
     </style>
 
 </resources>

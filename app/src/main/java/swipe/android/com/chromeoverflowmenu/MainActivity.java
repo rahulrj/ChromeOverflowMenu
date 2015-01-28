@@ -11,11 +11,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -54,6 +54,21 @@ public class MainActivity extends ActionBarActivity {
                 //setDismissListener();
 
 
+                popupWindow.getListView().post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Log.d("rahul",""+popupWindow.getListView()+ " "+popupWindow.getListView().getChildCount());
+                        ViewGroup viewGroup=(LinearLayout)popupWindow.getListView().getChildAt(0).findViewById(R.id.first_root);
+                        LayoutAnimationController lac2 = new LayoutAnimationController(AnimationUtils.loadAnimation(MainActivity.this, R.anim.first_row_animation), 0.3f);
+                        viewGroup.setLayoutAnimation(lac2);
+
+                    }
+                });
+
+
+
+
             }
         });
 
@@ -61,7 +76,7 @@ public class MainActivity extends ActionBarActivity {
             public void run() {
 
                 popupWindow.setAnchorView(getSupportActionBar().getCustomView().findViewById(R.id.abc));
-               // popupWindow.setAdapter(adapter);
+                popupWindow.setAdapter(adapter);
                 setClickListener();
                 popupWindow.setWidth(480); // note: don't use pixels, use a dimen resource
                 popupWindow.setHeight(1000);
@@ -160,8 +175,9 @@ public class MainActivity extends ActionBarActivity {
 
                     if(convertView==null){
                         holder=new ViewHolder();
-                        if(position==0)
-                            convertView=inflater.inflate(R.layout.menu_top_row,null);
+                        if(position==0) {
+                            convertView = inflater.inflate(R.layout.menu_top_row, null);
+                        }
                         else
                             convertView=inflater.inflate(R.layout.listview_row,null);
 
@@ -177,8 +193,8 @@ public class MainActivity extends ActionBarActivity {
                         holder.hamburgerMenuItem.setText(menuItems[position - 1]);
 
                 if(position==0) {
-                    Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.first_row_animation);
-                    convertView.startAnimation(animation);
+                   // Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.first_row_animation);
+                    //convertView.startAnimation(animation);
                 }
             else {
 
