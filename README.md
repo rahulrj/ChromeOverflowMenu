@@ -6,4 +6,4 @@ them by slowing down the Animation duration in Developer options.
 
 
 ## Demo  
-![](https://www.dropbox.com/s/1f4i1ad9ky1wjth/video.flv?dl=0)
+![](video.flv)
