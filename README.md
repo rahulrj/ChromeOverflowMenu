@@ -8,4 +8,4 @@ them by slowing down the Animation duration in Developer options.
 ## Demo  
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=ynGcYktKVcM
 " target="_blank"><img src="http://img.youtube.com/vi/ynGcYktKVcM/0.jpg" 
- width="240" height="180" border="10" /></a>
+ width="350" height="400" border="10" /></a>
