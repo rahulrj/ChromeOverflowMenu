@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ListPopupWindow;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,13 +20,10 @@ import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
 
-    LayoutInflater inflater;
-    ImageView overflowMenu;
-    ListPopupWindow popupWindow;
-    String def[]=new String[]{"New Tab","New Incognito Tab","Bookmarks","Recent Tabs","History","Share","Print","Find in page","Add To Home screen","Request desktop site"};
-    boolean listenerSet=false;
-    android.os.Handler mHandler=new android.os.Handler();
-    View mConvertViewCopy;
+    LayoutInflater mInflater;
+    ImageView mOverflowMenu;
+    ListPopupWindow mPopupWindow;
+    String mPopupWindowItems[]=new String[]{"New Tab","New Incognito Tab","Bookmarks","Recent Tabs","History","Share","Print","Find in page","Add To Home screen","Request desktop site"};
 
 
     @Override
@@ -37,50 +33,22 @@ public class MainActivity extends ActionBarActivity {
         setupTitleBar();
 
 
-        popupWindow=new ListPopupWindow(this);
-        popupWindow.setAnimationStyle(R.style.Animation);
-        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.background));
-       // popupWindow.setAnimationStyle(R.anim.hyperspace_out);
-        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final HamburgerMenuAdapter adapter=new HamburgerMenuAdapter(def);
-        overflowMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mPopupWindow=new ListPopupWindow(this);
+        mPopupWindow.setAnimationStyle(R.style.Animation);
+        mPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_background));
+        mInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final PopupAdapter adapter=new PopupAdapter(mPopupWindowItems);
+        setClickListener();
 
-                Log.d("rahul","clicked");
-                popupWindow.show();
-                LayoutAnimationController lac = new LayoutAnimationController(AnimationUtils.loadAnimation(MainActivity.this, R.anim.push_left_in), 0.3f);
-                popupWindow.getListView().setLayoutAnimation(lac);
-                //setDismissListener();
-
-
-                popupWindow.getListView().post(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        Log.d("rahul",""+popupWindow.getListView()+ " "+popupWindow.getListView().getChildCount());
-                        ViewGroup viewGroup=(LinearLayout)popupWindow.getListView().getChildAt(0).findViewById(R.id.first_root);
-                        LayoutAnimationController lac2 = new LayoutAnimationController(AnimationUtils.loadAnimation(MainActivity.this, R.anim.first_row_animation), 0.3f);
-                        viewGroup.setLayoutAnimation(lac2);
-
-                    }
-                });
-
-
-
-
-            }
-        });
 
         findViewById(R.id.root).post(new Runnable() {
             public void run() {
 
-                popupWindow.setAnchorView(getSupportActionBar().getCustomView().findViewById(R.id.abc));
-                popupWindow.setAdapter(adapter);
-                setClickListener();
-                popupWindow.setWidth(480); // note: don't use pixels, use a dimen resource
-                popupWindow.setHeight(1000);
-                popupWindow.setDropDownGravity(Gravity.END);
+                mPopupWindow.setAnchorView(getSupportActionBar().getCustomView().findViewById(R.id.abc));
+                mPopupWindow.setAdapter(adapter);
+                mPopupWindow.setWidth(dpToPx(getResources().getInteger(R.integer.popup_width))); // note: don't use pixels, use a dimen resource
+                mPopupWindow.setHeight(dpToPx(getResources().getInteger(R.integer.popup_height)));
+                mPopupWindow.setDropDownGravity(Gravity.END);
 
                // popupWindow.setHorizontalOffset(-130);
 
@@ -89,40 +57,31 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-//    private void setDismissListener(){
-//
-//        listenerSet=true;
-//        popupWindow.getListView().post(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                View view=popupWindow.getListView().getChildAt(0);
-//                View overflowView=view.findViewById(R.id.overflow);
-//                overflowView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//
-//                        popupWindow.dismiss();
-//                    }
-//                });
-//            }
-//        });
-//
-//
-//    }
 
     private void setClickListener(){
 
 
-//       View firstRow=popupWindow.getListView().getChildAt(0);
-//       View overflowMenu=firstRow.findViewById(R.id.overflow_menu);
-//        overflowMenu.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                popupWindow.dismiss();
-//            }
-//        });
+        mOverflowMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mPopupWindow.show();
+                LayoutAnimationController lac = new LayoutAnimationController(AnimationUtils.loadAnimation(MainActivity.this, R.anim.translate_from_top), 0.3f);
+                mPopupWindow.getListView().setLayoutAnimation(lac);
+                mPopupWindow.getListView().post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        ViewGroup viewGroup = (LinearLayout) mPopupWindow.getListView().getChildAt(0).findViewById(R.id.first_root);
+                        LayoutAnimationController lac2 = new LayoutAnimationController(AnimationUtils.loadAnimation(MainActivity.this, R.anim.first_row_animation), 0.3f);
+                        viewGroup.setLayoutAnimation(lac2);
+
+                    }
+                });
+
+
+            }
+        });
 
     }
 
@@ -131,17 +90,19 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(false);
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.background));
 
         getSupportActionBar().setCustomView(R.layout.custom_action_bar);
-        overflowMenu=(ImageView)getSupportActionBar().getCustomView().findViewById(R.id.overflow_menu);
+        mOverflowMenu=(ImageView)getSupportActionBar().getCustomView().findViewById(R.id.overflow_menu);
 
     }
 
-    private class HamburgerMenuAdapter extends BaseAdapter {
+    private class PopupAdapter extends BaseAdapter {
 
         private String[] menuItems;
-        public HamburgerMenuAdapter(String[] menuItems){
+        public PopupAdapter(String[] menuItems){
 
             this.menuItems=menuItems;
 
@@ -149,7 +110,7 @@ public class MainActivity extends ActionBarActivity {
 
         private  class ViewHolder{
 
-            TextView hamburgerMenuItem;
+            TextView menuItemView;
         }
 
         @Override
@@ -176,12 +137,12 @@ public class MainActivity extends ActionBarActivity {
                     if(convertView==null){
                         holder=new ViewHolder();
                         if(position==0) {
-                            convertView = inflater.inflate(R.layout.menu_top_row, null);
+                            convertView = mInflater.inflate(R.layout.menu_top_row, null);
                         }
                         else
-                            convertView=inflater.inflate(R.layout.listview_row,null);
+                            convertView=mInflater.inflate(R.layout.listview_row,null);
 
-                        holder.hamburgerMenuItem=(TextView)convertView.findViewById(R.id.menu_name);
+                        holder.menuItemView=(TextView)convertView.findViewById(R.id.menu_name);
                         convertView.setTag(holder);
                     }
                     else{
@@ -189,20 +150,8 @@ public class MainActivity extends ActionBarActivity {
                         holder=(ViewHolder)convertView.getTag();
                     }
 
-                    if(holder.hamburgerMenuItem!=null)
-                        holder.hamburgerMenuItem.setText(menuItems[position - 1]);
-
-                if(position==0) {
-                   // Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.first_row_animation);
-                    //convertView.startAnimation(animation);
-                }
-            else {
-
-                    //Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.push_left_in);
-                    //convertView.startAnimation(animation);
-
-                }
-
+                    if(holder.menuItemView!=null)
+                        holder.menuItemView.setText(menuItems[position - 1]);
 
           return convertView;
 
@@ -214,9 +163,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
-
 
         return true;
     }
@@ -232,5 +178,12 @@ public class MainActivity extends ActionBarActivity {
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public  int dpToPx(int dp) {
+        float density = getApplicationContext().getResources()
+                .getDisplayMetrics().density;
+        return Math.round((float) dp * density);
     }
 }

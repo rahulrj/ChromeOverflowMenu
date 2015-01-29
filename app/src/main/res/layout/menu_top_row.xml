@@ -7,7 +7,7 @@
     android:weightSum="3"
     android:paddingBottom="32dp"
     android:paddingTop="10dp"
-    android:background="#ffffff">
+    android:background="#eeeeee">
 
 
     <ImageView
