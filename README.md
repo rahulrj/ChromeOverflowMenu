@@ -5,4 +5,5 @@ Not too much of work but it was nice to find out how things are animating and bu
 them by slowing down the Animation duration in Developer options.  
 
 
-Attached below is the video of the animation.
+## Demo  
+![](https://www.dropbox.com/s/1f4i1ad9ky1wjth/video.flv?dl=0)
