@@ -6,4 +6,6 @@ them by slowing down the Animation duration in Developer options.
 
 
 ## Demo  
-![](video.flv)
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=ynGcYktKVcM
+" target="_blank"><img src="http://img.youtube.com/vi/ynGcYktKVcME/0.jpg" 
+alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
